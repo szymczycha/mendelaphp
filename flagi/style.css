@@ -1,0 +1,38 @@
+* {
+    margin: 0;
+    box-sizing: border-box;
+    padding: 0;
+    background-color: rgb(49, 49, 49);
+    color: whitesmoke;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: fit-content;
+}
+
+table {
+    width: 50%;
+    text-align: center;
+}
+
+td,
+th {
+    border: 1px solid black;
+}
+
+#insert_form {
+    display: flex;
+    flex-direction: row;
+}
+
+.delete_button {
+    background-image: url(gfx/u.gif);
+    background-repeat: no-repeat;
+    border: none;
+    width: 20px;
+    height: 20px;
+}

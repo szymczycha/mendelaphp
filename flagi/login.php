@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style2.css">
+    <title>Document</title>
+</head>
+<body>
+    <?php 
+        if(isset($_POST["zarejestruj"])){
+            //if istnieje juz ten uzytkownik 
+            $username = $_POST["username"];
+            $password = password_hash($_POST["password"], PASSWORD_DEFAULT);
+            $user_type = $_POST["user_type"];
+            
+            
+            $mysqli = mysqli_connect("localhost", "root", "", "flagi");
+            $result = mysqli_query($mysqli, "SELECT * FROM uzytkownicy WHERE username = '$username'");
+            $rows = mysqli_fetch_all($result, MYSQLI_ASSOC);
+            if($rows == null){
+
+
+                $connection = mysqli_connect("localhost","root","","flagi");
+                $queryString = "INSERT INTO `uzytkownicy`(`username`, `password`, `user_type`) VALUES (?,?,?) ";
+                $query = $connection->prepare($queryString);
+                $query->bind_param("sss", 
+                    $username, 
+                    $password,
+                    $user_type);
+                $query->execute();
+                echo "Dodano $query->affected_rows uzytkownika.";
+                mysqli_close($connection);
+            }else{
+                echo "istnieje juz taki uzytkownik";
+            }
+        }
+    ?>
+    <form method="post" action="index.php" class="form">
+        <input type="text" name="username"/>
+        <input type="password" name="password"/>
+        <button type="submit">zaloguj</button>
+    </form>
+    <a href="rejestracja.php">Zarejestruj się</a>
+</body>
+</html>
