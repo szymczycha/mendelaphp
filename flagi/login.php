@@ -16,21 +16,19 @@
             $password = password_hash($_POST["password"], PASSWORD_DEFAULT);
             $user_type = $_POST["user_type"];
             
-            
             $mysqli = mysqli_connect($db_hostname, $db_username, $db_password, $db_name);
             $result = mysqli_query($mysqli, "SELECT * FROM uzytkownicy WHERE username = '$username'");
             $rows = mysqli_fetch_all($result, MYSQLI_ASSOC);
+            
             if($rows == null){
 
-
+                var_dump($rows);
                 $connection = mysqli_connect($db_hostname, $db_username, $db_password, $db_name);
-                $queryString = "INSERT INTO `uzytkownicy`(`username`, `password`, `user_type`) VALUES (?,?,?) ";
-                $query = $connection->prepare($queryString);
-                $query->bind_param("sss", 
-                    $username, 
-                    $password,
-                    $user_type);
-                $query->execute();
+                $queryString = "INSERT INTO `uzytkownicy`(`username`, `password`, `user_type`) VALUES (?,?,?);";
+                $query = mysqli_prepare($connection, $queryString);
+                mysqli_stmt_bind_param($query, "sss", $username, $password, $user_type);
+                mysqli_stmt_execute($query);
+                var_dump($query);
                 echo "Dodano $query->affected_rows uzytkownika.";
                 mysqli_close($connection);
             }else{
