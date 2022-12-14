@@ -12,6 +12,7 @@
     <!-- <div style="display: flex;"> -->
         
     <?php
+        include("hidden.php");
         session_start();
         if(isset($_POST["username"])){
             $username = $_POST["username"];
@@ -22,7 +23,7 @@
         $user_type = "";
         // var_dump($username);
         // var_dump($password);
-        // $connection = mysqli_connect("localhost", "root", "", "flagi");
+        // $connection = mysqli_connect($db_hostname, $db_username, $db_password, $db_name);
         // $queryString = "SELECT `user_type` FROM `uzytkownicy` WHERE `username` = ? AND `password` = ?";
         // // $query = $connection->prepare($queryString);
         // $query = mysqli_prepare($connection, $queryString);
@@ -43,7 +44,7 @@
         if(isset($_POST["password"]) &&
                 isset($_POST["username"])){
                 
-            $mysqli = mysqli_connect("localhost", "root", "", "flagi");
+            $mysqli = mysqli_connect($db_hostname, $db_username, $db_password, $db_name);
             $result = mysqli_query($mysqli, "SELECT * FROM uzytkownicy WHERE username = '$username'");
             $rows = mysqli_fetch_all($result, MYSQLI_ASSOC);
             if($rows == null){
@@ -74,7 +75,7 @@
                 $delete_id = $_POST["delete_id"];
                 if(isset($delete_id)&&
                     $delete_id != ""){
-                    $connection = mysqli_connect("localhost","root","","flagi");
+                    $connection = mysqli_connect($db_hostname, $db_username, $db_password, $db_name);
                     $queryString = "DELETE FROM `dane` WHERE `ID` = ?";
                     $query = $connection->prepare($queryString);
                     $query->bind_param("i", 
@@ -102,7 +103,7 @@
                     $update_nr_kat != "" &&
                     $update_stop_id != "" &&
                     $update_rok != ""){
-                    $connection = mysqli_connect("localhost","root","","flagi");
+                    $connection = mysqli_connect($db_hostname, $db_username, $db_password, $db_name);
                     $queryString = "UPDATE `dane` SET `flaga_id`= ?,`nominal`= ?,`nr_kat`= ?,`stop_id`= ?,`rok`= ? WHERE `ID` = ?";
                     $query = $connection->prepare($queryString);
                     $query->bind_param("issiii", 
@@ -133,7 +134,7 @@
                     $insert_nr_kat != "" &&
                     $insert_stop_id != "" &&
                     $insert_rok != ""){
-                    $connection = mysqli_connect("localhost","root","","flagi");
+                    $connection = mysqli_connect($db_hostname, $db_username, $db_password, $db_name);
                     $queryString = "INSERT INTO `dane`(`flaga_id`, `nominal`, `nr_kat`, `stop_id`, `rok`) VALUES (?, ?, ?, ?, ?)";
                     $query = $connection->prepare($queryString);
                     $query->bind_param("isssi", 
@@ -166,7 +167,7 @@
                 <?php endif; ?>
             </tr>
             <?php
-                $connection = mysqli_connect("localhost","root","","flagi");
+                $connection = mysqli_connect($db_hostname, $db_username, $db_password, $db_name);
                 $queryString = "SELECT `flagi`.`Link`, `nominal`, `nr_kat`, `stopy`.`Nazwa`, `rok`, `dane`.`ID`, `flaga_id`, `stop_id` FROM `dane`, `flagi`,`stopy` WHERE `dane`.`flaga_id` = `flagi`.`ID` AND `stopy`.`ID` = `dane`.`stop_id`";
                 $query = mysqli_query($connection, $queryString);
                 $results = mysqli_fetch_all($query);
@@ -180,7 +181,7 @@
                                     <input type='hidden' name='update_id' value='$row[5]'/>
                                     <td>
                                         <select name='update_flaga_id'>";
-                                        $connection = mysqli_connect("localhost","root","","flagi");
+                                        $connection = mysqli_connect($db_hostname, $db_username, $db_password, $db_name);
                                         $queryString = "SELECT * FROM `flagi`";
                                         $flagiquery = mysqli_query($connection, $queryString);
                                         $flagiresults = mysqli_fetch_all($flagiquery);
@@ -202,7 +203,7 @@
                                     </td>
                                     <td>
                                         <select name='update_stop_id'>";
-                                        $connection = mysqli_connect("localhost","root","","flagi");
+                                        $connection = mysqli_connect($db_hostname, $db_username, $db_password, $db_name);
                                         $queryString = "SELECT * FROM `stopy`";
                                         $stopyquery = mysqli_query($connection, $queryString);
                                         $stopyresults = mysqli_fetch_all($stopyquery);
@@ -276,7 +277,7 @@
         <form method="POST">
             <select name="insert_flaga_id" id="insert_flaga_id">
                 <?php
-                    $connection = mysqli_connect("localhost","root","","flagi");
+                    $connection = mysqli_connect($db_hostname, $db_username, $db_password, $db_name);
                     $queryString = "SELECT * FROM `flagi`";
                     $query = mysqli_query($connection, $queryString);
                     $results = mysqli_fetch_all($query);
@@ -291,7 +292,7 @@
             
             <select name="insert_stop_id" id="insert_stop_id">
                 <?php
-                    $connection = mysqli_connect("localhost","root","","flagi");
+                    $connection = mysqli_connect($db_hostname, $db_username, $db_password, $db_name);
                     $queryString = "SELECT * FROM `stopy`";
                     $query = mysqli_query($connection, $queryString);
                     $results = mysqli_fetch_all($query);
