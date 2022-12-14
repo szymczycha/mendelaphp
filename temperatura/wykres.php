@@ -13,7 +13,7 @@ $data = [
     '10' => 36.3,
     '11' => 36.7,
     '13' => 36.3,
-    '14' => "chory",
+    '14' => 33,
     '15' => 36.4,
     '16' => 36.3,
     '17' => 36.7,
@@ -29,7 +29,10 @@ $data = [
     '27' => 36.7,
     '28' => 36.4,
 ];
-$im = @imagecreatetruecolor(800, 300)
+$width = isset($_GET["width"]) ? $_GET["width"] : 800;
+$height = isset($_GET["height"]) ? $_GET["height"] : 300;
+
+$im = @imagecreatetruecolor($width, $height)
       or die('Cannot Initialize new GD image stream');
 $black = imagecolorallocate($im, 0, 0, 0);
 $white = imagecolorallocate($im, 255, 255, 255);
@@ -40,7 +43,7 @@ $dashed_gray = array($gray, $gray, $gray, $gray, $gray, $white, $white, $white, 
 
 $origin_x = 100;
 $origin_y = 210;
-$numberOfDays = 28;
+$numberOfDays = isset($_GET["numberOfDays"]) ? $_GET["numberOfDays"] : 28;
 imagefill($im, 0, 0, $white);
 imagestringup($im, 5, 10, 170, "temperatura", $gray);
 imagestring($im, 3, $origin_x-20, $origin_y-5-180, ".2", $black);
@@ -66,11 +69,11 @@ for($i = 1; $i <= 6; $i+=1){
 imageline($im, $origin_x + 4, $origin_y-150, $origin_x+$numberOfDays*20, $origin_y-150, $red);
 
 foreach($data as $i => $temp){
-    if($temp == "chory"){
+    if($temp <= 36 || $temp >= 37){
         imageellipse($im, $origin_x+$i*20, $origin_y, 8, 8, $red);  
     }else{
         imageellipse($im, $origin_x+$i*20, $origin_y-($temp-36)*150, 5, 5, $blue);
-        if(isset($data[$i+1]) && $data[$i+1] != "chory"){
+        if(isset($data[$i+1]) && ($data[$i+1] > 36 && $data[$i+1] < 37)){
             imageline($im, $origin_x+$i*20, $origin_y-($temp-36)*150, $origin_x+($i+1)*20, $origin_y-($data[$i+1]-36)*150, $blue);
             // imageline($im, $origin_x+$i*20, $origin_y-($temp-36)*150, $origin_x+($i+1)*20, $data[$i+1], $blue);
         }
